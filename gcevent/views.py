@@ -91,14 +91,14 @@ def oauthCallback(request):
     credentials = flow.credentials
 
     user_profile = getUserProfileInfo(credentials.token)
-    # credentials = {
-    #     'token': credentials.token,
-    #     'refresh_token': credentials.refresh_token,
-    #     'token_uri': credentials.token_uri,
-    #     'client_id': credentials.client_id,
-    #     'client_secret': credentials.client_secret,
-    #     'scopes': credentials.scopes
-    # }
+    credentials = {
+        'token': credentials.token,
+        'refresh_token': credentials.refresh_token,
+        'token_uri': credentials.token_uri,
+        'client_id': credentials.client_id,
+        'client_secret': credentials.client_secret,
+        'scopes': credentials.scopes
+    }
 
     if not UserCredentials.objects.filter(uid=user_profile['id']).exists():
         UserCredentials.objects.create(
@@ -106,7 +106,7 @@ def oauthCallback(request):
             state=request.GET['state'],
             code=request.GET['code'],
             scope=request.GET['scope'],
-            credentials=json.loads(credentials.to_json()),
+            credentials=credentials,
             profile=user_profile
         )
         response = {
