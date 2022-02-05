@@ -25,7 +25,7 @@ SECRET_KEY = 'tyxld5vgq)_e+l&b!mr9bz$3_7!mk&6%3h1dk&i54e)29k)&2p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-DOCKER = True
+PRODUCTION = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,13 +74,13 @@ WSGI_APPLICATION = 'calendar_events.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if DOCKER:
+if PRODUCTION:
     DATABASES = {
         # Localhost configuration
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'gcevent',
-            'HOST': 'db',
+            'HOST': '127.0.0.1',
             'PORT': '3306',
             'USER': 'gcevent',
             'PASSWORD': 'gc@vent#767656'
@@ -141,11 +141,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
-
-# AIzaSyBo_rNu_mqfeTkdieRWwBJhisM6AVSRPsk
-
-# CL ID: 94509744485-o1hlocloo3mnqa74pqja3gq4juuv86am.apps.googleusercontent.com
-# CL SEC: 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
-
-
-# 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
