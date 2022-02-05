@@ -26,7 +26,7 @@ googleapis-common-protos==1.54.0
 gunicorn==20.1.0
 httplib2==0.20.4
 idna==3.3
-kombu==5.2.3
+kombu==5.0.2
 mysqlclient==2.1.0
 oauthlib==3.2.0
 packaging==21.3
