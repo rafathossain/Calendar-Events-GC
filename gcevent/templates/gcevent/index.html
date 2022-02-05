@@ -1,0 +1,37 @@
+{% extends 'gcevent/app.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-12 text-center">
+                <img class="p-3" src="https://sidekickai.com/wp-content/uploads/2021/11/g-cal.png"
+                     width="100px">
+                <h3 class="mb-0">GC Event</h3>
+                <small>A way to collect all the events from a user's calendar.</small>
+            </div>
+            <div class="col-12 text-center my-3">
+                <a href="{% url 'get.auth.token' %}">
+                    <button id="authorize_button" class="btn btn-primary" onclick="this.disabled=true;">
+                        Connect Google Calendar
+                    </button>
+                </a>
+            </div>
+            <div class="col-12 text-center mt-5">
+                <h3>Control Panel</h3>
+                <p>
+                    <i>
+                        <b>Default Username:</b> gcevent
+                        <br>
+                        <b>Default Password:</b> gcevent
+                    </i>
+                </p>
+                <a href="/accounts">
+                    <button class="btn btn-dark">Go to Django Admin</button>
+                </a>
+                <a href="{% url 'user.list' %}">
+                    <button type="button" class="btn btn-success">View User List</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

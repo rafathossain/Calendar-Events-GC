@@ -1,0 +1,95 @@
+{% extends 'gcevent/app.html' %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.4/datatables.min.css"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-12 text-center">
+                <img class="p-3" src="https://sidekickai.com/wp-content/uploads/2021/11/g-cal.png"
+                     width="100px">
+                <h3 class="mb-0">GC Event - User List</h3>
+                <small>A way to collect all the events from a user's calendar.</small>
+                <br>
+                <a href="{% url 'index' %}">
+                    <button type="button" class="btn btn-primary mt-3">Go to Home</button>
+                </a>
+                <a href="/accounts">
+                    <button class="btn btn-dark">Go to Django Admin</button>
+                </a>
+            </div>
+            <div class="col-12 my-3">
+                <hr>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <table class="table table-striped" id="datatable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Photo</th>
+                        <th>Name & Email</th>
+                        <th class="text-center">Total Events</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in user_list %}
+                        <tr>
+                            <td class="text-center">
+                                {{ user.uid }}
+                                {% if user.celery_run is not None %}
+                                    <br>
+                                    <small>Updated at {{ user.celery_run|date:"d M Y h:m:s A" }}</small>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <img src="{{ user.profile.picture }}" width="40"/>
+                            </td>
+                            <td>
+                                {{ user.profile.name }}
+                                <br>
+                                <small>{{ user.profile.email }}</small>
+                            </td>
+                            <td class="text-center">{{ user.events_set.all|length }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'user.fetch.events' user.uid %}">
+                                    <button type="button" class="btn btn-outline-primary btn-sm">Fetch Events</button>
+                                </a>
+                                <a href="{% url 'user.view.events' user.uid %}">
+                                    <button type="button" class="btn btn-outline-success btn-sm">View Events</button>
+                                </a>
+                                <a href="{% url 'user.delete' user.uid %}" onclick="return confirm('Are you sure?')">
+                                    <button type="button" class="btn btn-outline-danger btn-sm">Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.4/datatables.min.js"></script>
+    <script>
+        $("#datatable").DataTable();
+    </script>
+{% endblock %}

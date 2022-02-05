@@ -1,0 +1,78 @@
+{% extends 'gcevent/app.html' %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.4/datatables.min.css"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-12 text-center">
+                <img class="p-3" src="https://sidekickai.com/wp-content/uploads/2021/11/g-cal.png"
+                     width="100px">
+                <h3 class="mb-0">GC Event - Event List of {{ user_info.profile.email }}</h3>
+                <small>A way to collect all the events from a user's calendar.</small>
+                <br>
+                <a href="{% url 'index' %}">
+                    <button type="button" class="btn btn-primary mt-3">Go to Home</button>
+                </a>
+                <a href="{% url 'user.list' %}">
+                    <button type="button" class="btn btn-secondary mt-3">Go to Users</button>
+                </a>
+                <a href="/accounts">
+                    <button class="btn btn-dark">Go to Django Admin</button>
+                </a>
+            </div>
+            <div class="col-12 my-3">
+                <hr>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <table class="table table-striped" id="datatable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Event ID</th>
+                        <th class="text-center">JSON</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event in event_list %}
+                        <tr>
+                            <td class="text-center">
+                                <a href="{{ event.link }}" target="_blank">
+                                    {{ event.summary }}
+                                </a>
+                                <br>
+                                {{ event.ev_id }}
+                            </td>
+                            <td>
+                                {{ event.event_json }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.4/datatables.min.js"></script>
+    <script>
+        $("#datatable").DataTable();
+    </script>
+{% endblock %}

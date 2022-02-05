@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  djangoapp:
+    build: .
+    volumes:
+      - .:/opt/services/djangoapp/src
+      - static_volume:/opt/services/djangoapp/static  # <-- bind the static volume
+      - media_volume:/opt/services/djangoapp/media  # <-- bind the media volume
+    depends_on:
+      - db
+
+  nginx:
+    image: pagespeed/nginx-pagespeed:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/opt/services/djangoapp/static  # <-- bind the static volume
+      - media_volume:/opt/services/djangoapp/media  # <-- bind the media volume
+    depends_on:
+      - djangoapp
+
+  db:
+    image: mysql:5.7.37
+    restart: always
+    environment:
+      MYSQL_DATABASE: gcevent
+      MYSQL_USER: gcevent
+      MYSQL_PASSWORD: gc@vent#767656
+      MYSQL_ROOT_PASSWORD: gc@vent#767656
+    volumes:
+      - db_volume:/var/lib/mysql/data
+    ports:
+      - "33066:3306"
+
+  # Celery
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A calendar_events worker -B -l DEBUG --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/opt/services/djangoapp/src
+    container_name: celery
+    depends_on:
+      - db
+      - redis
+      - djangoapp
+
+volumes:
+  db_volume:
+  static_volume:  # <-- declare the static volume
+  media_volume:  # <-- declare the media volume

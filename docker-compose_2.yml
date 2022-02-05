@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  # Core App
+  app:
+    build: .
+    volumes:
+      - .:/gcevent
+    ports:
+      - "8000:8000"
+    image: app:gcevent
+    container_name: gcevent_container
+    depends_on:
+      - db
+
+#  nginx:
+#    image: pagespeed/nginx-pagespeed:latest
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./config/nginx/conf.d:/etc/nginx/conf.d
+#      - .:/gcevent/static  # <-- bind the static volume
+#      - .:/gcevent/media  # <-- bind the media volume
+#    depends_on:
+#      - app
+
+  # MySQL Database
+  db:
+    image: mysql:5.7.37
+    restart: always
+    environment:
+      MYSQL_DATABASE: gcevent
+      MYSQL_USER: gcevent
+      MYSQL_PASSWORD: gc@vent#767656
+      MYSQL_ROOT_PASSWORD: gc@vent#767656
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - "33066:3306"
+
+  # Celery
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A calendar_events worker -B -l DEBUG --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/gcevent
+    container_name: celery
+    depends_on:
+      - db
+      - redis
+      - app

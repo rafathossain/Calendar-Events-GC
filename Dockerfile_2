@@ -1,0 +1,19 @@
+# start from an official image
+FROM python:3.9.4
+ENV PYTHONUNBUFFERED=1
+
+# arbitrary location choice: you can change the directory
+WORKDIR /gcevent
+
+# install our dependencies
+COPY requirements.txt /gcevent
+RUN pip install -r requirements.txt
+
+#RUN cd calendar_events && python manage.py collectstatic --no-input -v 2
+#RUN python manage.py collectstatic --no-input -v 2
+
+# expose the port 8000
+EXPOSE 8000
+
+# define the default command to run when starting the container
+CMD ["gunicorn", "--chdir", "calendar_events", "--bind", ":8000", "calendar_events.wsgi:application"]

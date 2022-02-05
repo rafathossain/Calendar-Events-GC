@@ -1,0 +1,4 @@
+# Project exclude paths
+*
+!__init__.py
+!.gitignore

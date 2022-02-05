@@ -1,0 +1,20 @@
+{% extends 'gcevent/app.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row p-5">
+            <div class="col-12 text-center">
+                <img class="p-3" src="https://sidekickai.com/wp-content/uploads/2021/11/g-cal.png"
+                     width="100px">
+                <h3 class="mb-0">GC Event</h3>
+                <small>A way to collect all the events from a user's calendar.</small>
+            </div>
+            <div class="col-12 text-center my-3">
+                <h5 class="text-success">{{ msg }}</h5>
+                <a href="{% url 'index' %}">
+                    <button type="button" class="btn btn-primary mt-3">Go to Home</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
