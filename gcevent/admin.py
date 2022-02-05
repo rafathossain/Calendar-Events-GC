@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(UserCredentials)
 admin.site.register(Events)
+admin.site.register(CeleryLog)
