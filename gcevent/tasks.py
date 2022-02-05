@@ -21,6 +21,7 @@ def fetchEvents():
               'https://www.googleapis.com/auth/userinfo.profile', 'openid']
 
     user_list = UserCredentials.objects.all()
+    event_count = 0
     for user in user_list:
         uid = user.uid
         user = UserCredentials.objects.get(uid=uid)
@@ -65,7 +66,12 @@ def fetchEvents():
                             created_at=event['created']
                         )
                         ev_instance.user.add(user)
+                        event_count += 1
                 except Exception as e:
                     pass
         except Exception:
             pass
+
+    CeleryLog.objects.create(
+        event_fetched=event_count
+    )

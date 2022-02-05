@@ -28,3 +28,8 @@ class Events(models.Model):
 
     def __str__(self):
         return self.summary
+
+
+class CeleryLog(models.Model):
+    event_fetched = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)

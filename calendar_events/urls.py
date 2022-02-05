@@ -25,6 +25,7 @@ urlpatterns = [
     path('oauth2callback', oauthCallback, name='oauth.callback'),
     path('oauth-response/<str:msg>', oauthResponse, name='oauth.response'),
     path('user-list', userList, name='user.list'),
+    path('celery-log', celeryLog, name='celery.log'),
     path('user-list/fetch-events/<str:uid>', fetchEvents, name='user.fetch.events'),
     path('user-list/view-events/<str:uid>', viewEvents, name='user.view.events'),
     path('user-list/delete/<str:uid>', deleteUser, name='user.delete'),

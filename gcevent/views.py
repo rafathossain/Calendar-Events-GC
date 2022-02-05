@@ -139,6 +139,15 @@ def oauthResponse(request, msg):
 
 
 @login_required
+def celeryLog(request):
+    celery_log = CeleryLog.objects.all().order_by('-created_at')
+    context = {
+        'celery_log': celery_log
+    }
+    return render(request, 'gcevent/celery-log.html', context)
+
+
+@login_required
 def userList(request):
     user_list = UserCredentials.objects.all().order_by('created_at')
     context = {
