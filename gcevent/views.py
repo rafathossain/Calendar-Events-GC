@@ -80,7 +80,10 @@ def oauthCallback(request):
     # Use the client_secret.json file to identify the application requesting
     # authorization. The client ID (from that file) and access scopes are required.
     flow = Flow.from_client_secrets_file(cred_path, SCOPES, state=request.GET['state'])
-    flow.redirect_uri = request.build_absolute_uri(reverse('oauth.callback'))
+    redirect_uri = request.build_absolute_uri(reverse('oauth.callback'))
+    if "http:" in redirect_uri:
+        redirect_uri = "https:" + redirect_uri[5:]
+    flow.redirect_uri = redirect_uri
 
     flow.fetch_token(authorization_response=authorization_response)
 
