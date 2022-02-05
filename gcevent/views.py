@@ -57,7 +57,10 @@ def getAuthToken(request):
     # match one of the authorized redirect URIs for the OAuth 2.0 client, which you
     # configured in the API Console. If this value doesn't match an authorized URI,
     # you will get a 'redirect_uri_mismatch' error.
-    flow.redirect_uri = request.build_absolute_uri(reverse('oauth.callback'))
+    redirect_uri = request.build_absolute_uri(reverse('oauth.callback'))
+    if "http:" in redirect_uri:
+        redirect_uri = "https:" + redirect_uri[5:]
+    flow.redirect_uri = redirect_uri
 
     # Generate URL for request to Google's OAuth 2.0 server.
     # Use kwargs to set optional request parameters.
