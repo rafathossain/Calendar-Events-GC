@@ -1,23 +1,21 @@
 from __future__ import print_function
 
 import json
-
-from django.shortcuts import render, HttpResponseRedirect, reverse, HttpResponse
-from django.conf import settings
-import datetime
-import requests
 import os.path
-from django.contrib.auth.models import User
-from .models import *
-from google.auth.transport.requests import Request as RequestG
+
+import requests
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from google.oauth2 import id_token
+from django.contrib.auth.models import User
+from django.shortcuts import render, HttpResponseRedirect, reverse
+from google.auth.transport.requests import Request as RequestG
 from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow, Flow
+from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import google.oauth2.credentials
+
+from .models import *
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/userinfo.email',
