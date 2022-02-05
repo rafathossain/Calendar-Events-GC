@@ -32,7 +32,6 @@ oauthlib==3.2.0
 packaging==21.3
 prompt-toolkit==3.0.26
 protobuf==3.19.4
-psycopg2==2.9.2
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.21
