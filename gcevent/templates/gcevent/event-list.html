@@ -43,7 +43,7 @@
                     <thead>
                     <tr>
                         <th class="text-center">Event ID</th>
-                        <th class="text-center">JSON</th>
+                        <th class="text-center">Information</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,46 @@
                                 {{ event.ev_id }}
                             </td>
                             <td>
-                                {{ event.event_json }}
+                                <b>kind</b>: {{ event.event_json.kind }}
+                                <br>
+                                <b>etag</b>: {{ event.event_json.etag }}
+                                <br>
+                                <b>id</b>: {{ event.event_json.id }}
+                                <br>
+                                <b>status</b>: {{ event.event_json.status }}
+                                <br>
+                                <b>htmlLink</b>: {{ event.event_json.htmlLink }}
+                                <br>
+                                <b>created</b>: {{ event.event_json.created }}
+                                <br>
+                                <b>updated</b>: {{ event.event_json.updated }}
+                                <br>
+                                <b>summary</b>: {{ event.event_json.summary }}
+                                <br>
+                                <b>creator_email</b>: {{ event.event_json.creator.email }}
+                                <br>
+                                <b>creator_self</b>: {{ event.event_json.creator.self }}
+                                <br>
+                                <b>organizer_email</b>: {{ event.event_json.organizer.email }}
+                                <br>
+                                <b>organizer_self</b>: {{ event.event_json.organizer.self }}
+                                <br>
+                                <b>start_dateTime</b>: {{ event.event_json.start.dateTime }}
+                                <br>
+                                <b>start_timeZone</b>: {{ event.event_json.start.timeZone }}
+                                <br>
+                                <b>end_dateTime</b>: {{ event.event_json.end.dateTime }}
+                                <br>
+                                <b>end_timeZone</b>: {{ event.event_json.end.timeZone }}
+                                <br>
+                                <b>iCalUID</b>: {{ event.event_json.iCalUID }}
+                                <br>
+                                <b>sequence</b>: {{ event.event_json.sequence }}
+                                <br>
+                                <b>reminders</b>: {{ event.event_json.reminders.useDefault }}
+                                <br>
+                                <b>eventType</b>: {{ event.event_json.eventType }}
+                                {#                                {{ event.event_json }}#}
                             </td>
                         </tr>
                     {% endfor %}
