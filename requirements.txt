@@ -1,5 +1,5 @@
 amqp==5.0.9
-asgiref==3.5.0
+asgiref==3.4.1
 billiard==3.6.4.0
 cachetools==5.0.0
 celery==5.2.3
