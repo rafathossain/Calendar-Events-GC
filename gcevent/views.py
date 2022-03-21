@@ -18,7 +18,8 @@ from googleapiclient.errors import HttpError
 from .models import *
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/userinfo.email',
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly', 'https://www.googleapis.com/auth/contacts.readonly',
+          'https://www.googleapis.com/auth/userinfo.email',
           'https://www.googleapis.com/auth/userinfo.profile', 'openid']
 
 cred_path = os.path.join(settings.BASE_DIR, 'gcevent/client_secret.json')
@@ -206,6 +207,70 @@ def fetchEvents(request, uid):
             except Exception:
                 pass
         messages.success(request, 'Events fetched successfully!')
+    except HttpError as error:
+        messages.error(request, 'An error occurred: %s' % error)
+
+    return HttpResponseRedirect(reverse('user.list'))
+
+
+@login_required
+def fetchContacts(request, uid):
+    user = UserCredentials.objects.get(uid=uid)
+    credentials = user.credentials
+    # import six
+    # print(six.iterkeys(credentials))
+
+    # token_file = os.path.join(settings.BASE_DIR, f'gcevent/tokens/{uid}.json')
+    # token = open(token_file, "w")
+    # token.write("Woops! I have deleted the content!")
+    # token.close()
+
+    # creds = Credentials.from_authorized_user_file(token_file, SCOPES)
+    creds = Credentials.from_authorized_user_info(credentials, SCOPES)
+
+    contacts = []
+
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(RequestG())
+        else:
+            messages.error(request, 'Invalid/Expired credentials! Please authorize again.')
+            return HttpResponseRedirect(reverse('user.list'))
+
+    try:
+        service = build('people', 'v1', credentials=creds)
+
+        # Call the People API
+        results = service.people().connections().list(
+            resourceName='people/me',
+            personFields='names,photos,emailAddresses').execute()
+        connections = results.get('connections', [])
+
+        for person in connections:
+            names = person.get('names', [])
+            emails = person.get('emailAddresses', [])
+            photos = person.get('photos', [])
+            name = ''
+            email = ''
+            photo = ''
+            if names:
+                name = names[0].get('displayName')
+            if emails:
+                email = emails[0].get('value')
+            if photos:
+                photo = photos[0].get('url')
+            contacts.append({
+                'name': name,
+                'email': email,
+                'photo': photo
+            })
+
+        context = {
+            'contacts': contacts
+        }
+
+        return render(request, 'gcevent/contact-list.html', context)
+        # messages.success(request, 'Contacts fetched successfully!')
     except HttpError as error:
         messages.error(request, 'An error occurred: %s' % error)
 

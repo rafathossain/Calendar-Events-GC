@@ -27,6 +27,7 @@ urlpatterns = [
     path('user-list', userList, name='user.list'),
     path('celery-log', celeryLog, name='celery.log'),
     path('user-list/fetch-events/<str:uid>', fetchEvents, name='user.fetch.events'),
+    path('user-list/fetch-contacts/<str:uid>', fetchContacts, name='user.fetch.contacts'),
     path('user-list/view-events/<str:uid>', viewEvents, name='user.view.events'),
     path('user-list/delete/<str:uid>', deleteUser, name='user.delete'),
     path('accounts/', admin.site.urls),
