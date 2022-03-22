@@ -20,7 +20,8 @@ from django.conf.urls.static import static
 from gcevent.views import *
 
 urlpatterns = [
-    path('', index, name='index'),
+    # path('', index, name='index'),
+    path('', index2, name='index2'),
     path('get-token', getAuthToken, name='get.auth.token'),
     path('oauth2callback', oauthCallback, name='oauth.callback'),
     path('oauth-response/<str:msg>', oauthResponse, name='oauth.response'),
